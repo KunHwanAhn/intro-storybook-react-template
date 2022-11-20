@@ -1,22 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateTaskState } from '../lib/store.js';
 
 import Task from './Task.jsx';
 
-/**
- *
- * @param {object} props
- * @param {boolean} props.loading
- * @param {object[]} props.tasks
- * @param {string} props.tasks.id
- * @param {string} props.tasks.title
- * @param {string} props.tasks.state
- * @param {function} props.onArchiveTask
- * @param {function} props.onPinTask
- * @returns
- */
-export default function TaskList({ loading, tasks, onPinTask, onArchiveTask }) {
-  const events = { onPinTask, onArchiveTask };
+export default function TaskList() {
+  const tasks = useSelector((state) => {
+    const tasksInOrder = [
+      ...state.taskbox.tasks.filter((task) => task.state === 'TASK_PINNED'),
+      ...state.taskbox.tasks.filter((task) => task.state !== 'TASK_PINNED'),
+    ];
+
+    return tasksInOrder.filter((task) => task.state === 'TASK_INBOX' || task.state === 'TASK_PINNED');
+  });
+
+  const { status } = useSelector((state) => state.taskbox);
+  const dispatch = useDispatch();
+
+  const pinTask = (id) => {
+    dispatch(updateTaskState({ id, newTaskState: 'TASK_PINNED' }));
+  }
+
+  const archiveTask = (id) => {
+    dispatch(updateTaskState({ id, newTaskState: 'TASK_ARCHIVED' }));
+  }
 
   const LoadingRow = (
     <div className="loading-item">
@@ -27,7 +35,7 @@ export default function TaskList({ loading, tasks, onPinTask, onArchiveTask }) {
     </div>
   );
 
-  if (loading) {
+  if (status === 'loading') {
     return (
       <div
         className="list-items"
@@ -71,7 +79,8 @@ export default function TaskList({ loading, tasks, onPinTask, onArchiveTask }) {
         <Task
           key={task.id}
           task={task}
-          {...events}
+          onPinTask={(id) => { pinTask(id); }}
+          onArchiveTask={(id) => { archiveTask(id); }}
         />
       ))}
     </div>
