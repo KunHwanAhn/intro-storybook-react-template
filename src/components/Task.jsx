@@ -1,6 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ *
+ * @param {object} props
+ * @param {object} props.task
+ * @param {string} props.task.id
+ * @param {string} props.task.title
+ * @param {string} props.task.state
+ * @param {function} props.onArchiveTask
+ * @param {function} props.onPinTask
+ * @returns
+ */
 export default function Task({ task: { id, title, state }, onArchiveTask, onPinTask }) {
   return (
     <div className={`list-item ${state}`}>
@@ -60,7 +71,7 @@ Task.propTypes = {
     title: PropTypes.string.isRequired,
     /** Current state of the task */
     state: PropTypes.string.isRequired,
-  }),
+  }).isRequired,
   /** Event to change the task to archived */
   onArchiveTask: PropTypes.func,
   /** Event to change the task to pinned */

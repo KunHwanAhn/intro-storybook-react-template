@@ -7,7 +7,7 @@ export default {
   title: 'Task',
 };
 
-const Template = args => <Task {...args} />;
+const Template = (args) => <Task {...args} />;
 
 const DEFAULT_TASK = {
   id: '1',
