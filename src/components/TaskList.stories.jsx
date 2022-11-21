@@ -3,16 +3,16 @@ import { Provider as StoreProvider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
 import TaskList from './TaskList.jsx';
-import * as TaskStories from './Task.stories.jsx';
+import { DEFAULT_TASK } from './Task.stories.jsx';
 
-export const mockedState = {
+export const MOCKED_STATE = {
   tasks: [
-    { ...TaskStories.Default.args.task, id: '1', title: 'Task 1' },
-    { ...TaskStories.Default.args.task, id: '2', title: 'Task 2' },
-    { ...TaskStories.Default.args.task, id: '3', title: 'Task 3' },
-    { ...TaskStories.Default.args.task, id: '4', title: 'Task 4' },
-    { ...TaskStories.Default.args.task, id: '5', title: 'Task 5' },
-    { ...TaskStories.Default.args.task, id: '6', title: 'Task 6' },
+    { ...DEFAULT_TASK, id: '1', title: 'Task 1' },
+    { ...DEFAULT_TASK, id: '2', title: 'Task 2' },
+    { ...DEFAULT_TASK, id: '3', title: 'Task 3' },
+    { ...DEFAULT_TASK, id: '4', title: 'Task 4' },
+    { ...DEFAULT_TASK, id: '5', title: 'Task 5' },
+    { ...DEFAULT_TASK, id: '6', title: 'Task 6' },
   ],
   status: 'idle',
   error: null,
@@ -46,7 +46,7 @@ const MockStore = ({ state, children }) => (
 export default {
   component: TaskList,
   title: 'TaskList',
-  excludeStories: /.*mockedState$/,
+  excludeStories: /.*MOCKED_STATE$/,
 }
 
 const Template = (args) => <TaskList />;
@@ -54,7 +54,7 @@ const Template = (args) => <TaskList />;
 export const Default = Template.bind({});
 Default.decorators = [
   (Story) => (
-    <MockStore state={mockedState}>
+    <MockStore state={MOCKED_STATE}>
       <Story />
     </MockStore>
   ),
@@ -64,14 +64,14 @@ export const WithPinnedTasks = Template.bind({});
 WithPinnedTasks.decorators = [
   (Story) => {
     const pinnedTasks = [
-      ...mockedState.tasks.slice(0, 5),
+      ...MOCKED_STATE.tasks.slice(0, 5),
       { id: '6', title: 'Task 6 (pinned)', state: 'TASK_PINNED' },
     ];
 
     return (
       <MockStore
         state={{
-          ...mockedState,
+          ...MOCKED_STATE,
           tasks: pinnedTasks,
         }}
       >
@@ -86,7 +86,7 @@ Loading.decorators = [
   (Story) => (
     <MockStore
       state={{
-        ...mockedState,
+        ...MOCKED_STATE,
         status: 'loading',
       }}
     >
@@ -100,7 +100,7 @@ Empty.decorators = [
   (Story) => (
     <MockStore
       state={{
-        ...mockedState,
+        ...MOCKED_STATE,
         tasks: [],
       }}
     >

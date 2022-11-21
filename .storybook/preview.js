@@ -1,4 +1,8 @@
 import React from 'react';
+import {
+  initialize as initializeMsw,
+  mswDecorator,
+} from 'msw-storybook-addon';
 
 import '../src/index.css';
 
@@ -12,7 +16,9 @@ export const parameters = {
   },
 };
 
+initializeMsw();
 export const decorators = [
+  mswDecorator,
   (Story) => (
     <div style={{ padding: '3em' }}>
       <Story />
